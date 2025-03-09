@@ -1,0 +1,121 @@
+EFI_SIZE="128M"
+export ZRAM_SIZE="8G"
+BACKUP_NAME="luks-header-backup"
+export GRUB_GFXMODE="1920x1080"
+
+SCRIPT_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+export SCRIPT_DIR=$(basename $SCRIPT_PATH)
+
+lsblk -p
+read -p "Enter the disk on which the system will be installed. Data on the disk will be wiped! (examples: /dev/sda /dev/nvme0n1 and etc) " DEV
+if [[ $DEV == "/dev/nvme"* ]]; then
+  _D1="p1"
+  _D2="p2"
+else
+  _D1="1"
+  _D2="2"
+fi
+
+export DEV1="$DEV$_D1"
+export DEV2="$DEV$_D2"
+
+export CRYPTROOT="cryptroot"
+export ROOT="/dev/mapper/$CRYPTROOT"
+
+read -p "Do you agree to destroy all the data on the $DEV and create patritions $DEV1 $DEV2 ? [Y/n] " ACCEPT
+if [[ "${ACCEPT,,}" != "y" ]]; then
+  echo "Installation aborted"
+  exit 1
+fi
+
+echo "Enter patrition password. Password will be hidden"
+_PASSWORD1="1"
+_PASSWORD2="2"
+while [ $_PASSWORD1 != $_PASSWORD2 ]
+do
+  if [[ $_PASSWORD1 != "1" && $_PASSWORD2 != "2" ]]; then
+    echo "Password does not match!"
+  fi
+  read -s -p "Password: " _PASSWORD1
+  echo ""
+  read -s -p "Re-enter: " _PASSWORD2
+  echo ""
+done
+export PASSWORD=$_PASSWORD1
+
+(
+  echo g;
+
+  echo n;
+  echo ;
+  echo ;
+  echo +$EFI_SIZE;
+  echo t;
+  echo uefi;
+
+  echo n;
+  echo ;
+  echo ;
+  echo ;
+
+  echo p;
+  echo w;
+) | fdisk $DEV
+
+mkfs.fat -F 32 $DEV1
+
+echo $PASSWORD | cryptsetup luksFormat --pbkdf pbkdf2 --sector-size=4096 $DEV2
+cryptsetup luksHeaderBackup $DEV2 --header-backup-file $BACKUP_NAME
+echo $PASSWORD | cryptsetup open $DEV2 $CRYPTROOT
+mkfs.ext4 $ROOT
+
+export DEV1_UUID=$(blkid $DEV1 -o value -s UUID)
+export DEV2_UUID=$(blkid $DEV2 -o value -s UUID)
+export ROOT_UUID=$(blkid $ROOT -o value -s UUID)
+
+mount $ROOT /mnt
+mount --mkdir $DEV1 /mnt/efi
+
+read -p "Enter hostname: " _HOSTNAME
+export HOSTNAME=${_HOSTNAME:-archlinux}
+echo "Hostname is $HOSTNAME"
+
+read -p "Enter username: " _USERNAME
+export USERNAME=${_USERNAME:-ultra}
+echo "Username is $USERNAME"
+
+echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
+echo "Connect to Wi-Fi if needed"
+iwctl station list
+iwctl
+reflector --verbose --country 'United States','Germany','Netherlands','Russia' --age 48 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+systemctl stop reflector
+
+sed -i 's/#ParallelDownloads/ParallelDownloads/g' /etc/pacman.conf
+sed -i 's/#Color/DisableDownloadTimeout/g' /etc/pacman.conf
+echo "[multilib]" >> /etc/pacman.conf
+echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+echo y | pacman -Sy archlinux-keyring
+
+pacstrap -K /mnt base base-devel linux-zen linux-firmware linux-headers intel-ucode amd-ucode flatpak vim nano htop \
+efibootmgr grub \
+networkmanager ufw bluez bluez-utils bluez-obex \
+pipewire lib32-pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack wireplumber realtime-privileges rtkit \
+mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-mesa-layers opencl-rusticl-mesa lib32-opencl-rusticl-mesa \
+sddm plasma konsole dolphin kio-admin spectacle ark vlc gnome-calculator gwenview kdenlive \
+firefox obsidian qbittorrent fish fastfetch \
+git clang android-tools exfatprogs reflector \
+lrzip unrar unzip unace 7zip squashfs-tools \
+ananicy-cpp irqbalance \
+noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
+ttf-liberation ttf-dejavu ttf-roboto \
+ttf-jetbrains-mono ttf-fira-code ttf-hack adobe-source-code-pro-fonts \
+ttf-caladea ttf-carlito ttf-opensans otf-overpass tex-gyre-fonts ttf-ubuntu-font-family
+
+genfstab -U /mnt >> /mnt/etc/fstab
+
+cp -r $SCRIPT_PATH /mnt
+arch-chroot /mnt ./$SCRIPT_DIR/chroot.sh
+cp $BACKUP_NAME /mnt/home/$USERNAME
+cp -r $SCRIPT_PATH /mnt/home/$USERNAME
+rm -rf /mnt/$SCRIPT_DIR
