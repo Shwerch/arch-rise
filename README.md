@@ -7,4 +7,6 @@ I created this based on the Arch WIki and some tutorials. You can use these scri
 
 If you want to use this, you need to learn the scripts. To do this, use the git clone command. You can change the values of some variables in them at will. Please note that the script postinstall.sh you need to run it manually on the installed system after the installation is complete.
 
+I tried to make the scripts easy to read. If you don't understand something, the Arch Wiki will help you.
+
 I am open to constructive criticism and suggestions for improving the scripts. Good luck learning Arch Linux!
