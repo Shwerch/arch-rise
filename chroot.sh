@@ -19,12 +19,8 @@ echo "127.0.0.1	localhost" > /etc/hosts
 echo "::1	localhost" >> /etc/hosts
 echo "127.0.1.1	$HOSTNAME.localdomain $HOSTNAME" >> /etc/hosts
 
-echo "Enter root password"
-passwd
 useradd -m $USERNAME
 usermod -aG wheel,audio,video,storage,lp,realtime $USERNAME
-echo "Enter $USERNAME password"
-passwd $USERNAME
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
 
 systemctl enable NetworkManager bluetooth ufw
@@ -71,3 +67,9 @@ echo "GRUB_TIMEOUT=1" >> /etc/default/grub
 echo "GRUB_CMDLINE_LINUX=\"loglevel=3 quiet mitigations=off selinux=0 cryptdevice=UUID=$DEV2_UUID:$CRYPTROOT cryptkey=rootfs:$KEY root=UUID=$ROOT_UUID\"" >> /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ARCHLINUX --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
+
+echo "Enter root password. If failed, enter \"passwd\" command again after the end of script execution"
+passwd
+echo "Enter $USERNAME password. If failed, enter \"passwd $USERNAME\" command again after the end of script execution"
+passwd $USERNAME
+exit

@@ -1,6 +1,8 @@
 SCRIPT_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SCRIPT_DIR=$(basename $SCRIPT_PATH)
 
+FIRMWARE="ast-firmware wd719x-firmware"
+
 sudo ufw allow 53317/tcp
 sudo ufw allow 53317/udp
 sudo ufw reload
@@ -25,7 +27,7 @@ makepkg -si
 cd ..
 rm -rf paru
 
-paru -S portproton ast-firmware wd719x-firmware cachyos-ananicy-rules-git \
-ttf-symbola ttf-impallari-cantora ttf-courier-prime ttf-gelasio-ib ttf-merriweather ttf-signika consolas-font apple-fonts
+paru -S portproton cachyos-ananicy-rules-git \
+ttf-symbola ttf-impallari-cantora ttf-courier-prime ttf-gelasio-ib ttf-merriweather ttf-signika consolas-font apple-fonts $FIRMWARE
 # ttf-source-sans-pro-ibx
 sudo systemctl restart ananicy-cpp

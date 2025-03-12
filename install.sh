@@ -119,3 +119,7 @@ arch-chroot /mnt ./$SCRIPT_DIR/chroot.sh
 cp $BACKUP_NAME /mnt/home/$USERNAME
 cp -r $SCRIPT_PATH /mnt/home/$USERNAME
 rm -rf /mnt/$SCRIPT_DIR
+
+echo "The installation is complete. You are on an installed system as root using arch-chroot. \
+Enter additional commands to configure the system, if necessary, and reboot by entering the \"exit\" and \"reboot\" commands."
+arch-chroot /mnt
