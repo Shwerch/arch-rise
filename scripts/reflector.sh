@@ -1,0 +1,1 @@
+reflector --verbose --country 'United States','Germany','Netherlands','Russia' --age 48 --protocol https --sort rate --save /etc/pacman.d/mirrorlist

@@ -30,7 +30,7 @@ makepkg -si
 cd ..
 rm -rf paru
 
-paru -S portproton cachyos-ananicy-rules-git \
-ttf-symbola ttf-impallari-cantora ttf-courier-prime ttf-gelasio-ib ttf-merriweather ttf-signika consolas-font apple-fonts $FIRMWARE
+paru -S portproton cachyos-ananicy-rules-git $FIRMWARE \
+ttf-symbola ttf-impallari-cantora ttf-courier-prime ttf-gelasio-ib ttf-merriweather ttf-signika consolas-font apple-fonts
 # ttf-source-sans-pro-ibx
 sudo systemctl restart ananicy-cpp
