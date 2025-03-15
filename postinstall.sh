@@ -20,7 +20,9 @@ mkdir ~/.config/fastfetch
 cp $SCRIPT_PATH/configs/config.jsonc ~/.config/fastfetch
 echo "fastfetch" >> ~/.bashrc
 
-flatpak install flathub io.github.ungoogled_software.ungoogled_chromium org.onlyoffice.desktopeditors com.vscodium.codium org.telegram.desktop org.localsend.localsend_app io.freetubeapp.FreeTube com.github.unrud.VideoDownloader app.drey.Dialect com.bitwarden.desktop org.gnome.Calculator
+flatpak install flathub io.github.ungoogled_software.ungoogled_chromium io.gitlab.librewolf-community org.onlyoffice.desktopeditors com.vscodium.codium \
+org.telegram.desktop org.qbittorrent.qBittorrent org.kde.kdenlive org.localsend.localsend_app io.freetubeapp.FreeTube com.github.unrud.VideoDownloader app.drey.Dialect \
+md.obsidian.Obsidian com.bitwarden.desktop org.gnome.Calculator org.gnome.Loupe
 
 git clone https://aur.archlinux.org/paru.git
 cd paru

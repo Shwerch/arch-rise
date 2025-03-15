@@ -102,8 +102,7 @@ efibootmgr grub \
 networkmanager ufw bluez bluez-utils bluez-obex \
 pipewire lib32-pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack wireplumber realtime-privileges rtkit \
 mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-mesa-layers opencl-rusticl-mesa lib32-opencl-rusticl-mesa \
-sddm plasma konsole dolphin kio-admin spectacle ark vlc gnome-calculator gwenview kdenlive \
-firefox obsidian qbittorrent fish fastfetch \
+sddm plasma konsole dolphin kio-admin spectacle ark fish fastfetch \
 git clang android-tools exfatprogs reflector \
 lrzip unrar unzip unace 7zip squashfs-tools \
 ananicy-cpp irqbalance \
