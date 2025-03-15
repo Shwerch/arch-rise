@@ -97,19 +97,23 @@ echo "[multilib]" >> /etc/pacman.conf
 echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 echo y | pacman -Sy archlinux-keyring
 
-pacstrap -K /mnt base base-devel linux-zen linux-firmware linux-headers intel-ucode amd-ucode flatpak vim nano htop \
-efibootmgr grub \
-networkmanager ufw bluez bluez-utils bluez-obex \
-pipewire lib32-pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack wireplumber realtime-privileges rtkit \
-mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-mesa-layers opencl-rusticl-mesa lib32-opencl-rusticl-mesa \
-sddm plasma konsole dolphin kio-admin spectacle ark fish fastfetch \
-git clang android-tools exfatprogs reflector \
-lrzip unrar unzip unace 7zip squashfs-tools \
-ananicy-cpp irqbalance \
-noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
+BASE="linux-zen linux-firmware linux-headers base base-devel intel-ucode amd-ucode flatpak vim nano htop"
+BOOTLOADER="efibootmgr grub"
+NETWORK="networkmanager ufw bluez bluez-utils bluez-obex"
+PIPEWIRE="pipewire lib32-pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack wireplumber realtime-privileges rtkit"
+VIDEODRIVER="mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-mesa-layers opencl-rusticl-mesa lib32-opencl-rusticl-mesa"
+KDE_PLASMA="sddm plasma konsole dolphin kio-admin spectacle ark"
+SHELL="fish fastfetch"
+UTILS="git clang android-tools exfatprogs reflector"
+ARCHIVES="lrzip unrar unzip unace 7zip squashfs-tools"
+PERFORMANCE="ananicy-cpp irqbalance"
+FONTS="noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
 ttf-liberation ttf-dejavu ttf-roboto \
 ttf-jetbrains-mono ttf-fira-code ttf-hack adobe-source-code-pro-fonts \
-ttf-caladea ttf-carlito ttf-opensans otf-overpass tex-gyre-fonts ttf-ubuntu-font-family
+ttf-caladea ttf-carlito ttf-opensans otf-overpass tex-gyre-fonts ttf-ubuntu-font-family"
+
+
+pacstrap -K /mnt $BASE $BOOTLOADER $NETWORK $PIPEWIRE $VIDEODRIVER $KDE_PLASMA $SHELL $UTILS $ARCHIVES $PERFORMANCE $FONTS
 
 genfstab -U /mnt >> /mnt/etc/fstab
 

@@ -20,9 +20,19 @@ mkdir ~/.config/fastfetch
 cp $SCRIPT_PATH/configs/config.jsonc ~/.config/fastfetch
 echo "fastfetch" >> ~/.bashrc
 
-flatpak install flathub io.github.ungoogled_software.ungoogled_chromium io.gitlab.librewolf-community org.onlyoffice.desktopeditors com.vscodium.codium \
-org.telegram.desktop org.qbittorrent.qBittorrent org.kde.kdenlive org.localsend.localsend_app io.freetubeapp.FreeTube com.github.unrud.VideoDownloader app.drey.Dialect \
-md.obsidian.Obsidian com.bitwarden.desktop org.gnome.Calculator org.gnome.Loupe
+BROWSER="io.github.ungoogled_software.ungoogled_chromium io.gitlab.librewolf-community"
+OFFICE="org.onlyoffice.desktopeditors"
+CODE_EDITOR="com.vscodium.codium"
+MESSENGER="org.telegram.desktop dev.vencord.Vesktop"
+TORRENT="org.qbittorrent.qBittorrent"
+VIDEOEDITOR="org.kde.kdenlive"
+FILE_SHARER="org.localsend.localsend_app"
+YOUTUBE="io.freetubeapp.FreeTube com.github.unrud.VideoDownloader"
+TRANSLATOR="app.drey.Dialect"
+CALCULATOR="org.gnome.Calculator"
+IMAGE_VIEWER="org.gnome.Loupe"
+
+flatpak install flathub $BROWSER $OFFICE $CODE_EDITOR $MESSENGER $TORRENT $VIDEOEDITOR $FILE_SHARER $YOUTUBE $TRANSLATOR $CALCULATOR $IMAGE_VIEWER
 
 git clone https://aur.archlinux.org/paru.git
 cd paru
