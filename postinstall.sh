@@ -11,6 +11,7 @@ balooctl6 suspend
 balooctl6 disable
 balooctl6 purge
 
+mkdir ~/.config/fish
 cp $SCRIPT_PATH/configs/config.fish ~/.config/fish
 cp $SCRIPT_PATH/configs/Fish.profile ~/.local/share/konsole
 echo "--ozone-platform-hint=auto" > ~/.config/chromium-flags.conf

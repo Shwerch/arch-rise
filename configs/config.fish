@@ -1,4 +1,4 @@
-set --erase fish_greeting
+set fish_greeting
 if status is-interactive
     fastfetch
 end

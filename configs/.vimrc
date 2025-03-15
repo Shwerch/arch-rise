@@ -25,7 +25,7 @@ set softtabstop=4
 
 set nocompatible
 
-set relativenumber
+" set relativenumber
 set number
 set numberwidth=1
 
