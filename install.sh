@@ -35,8 +35,25 @@ export HOSTNAME=${_HOSTNAME:-"archlinux"}
 read -p "Enter username: " _USERNAME
 export USERNAME=${_USERNAME:-"ultra"}
 
-read -p "Choose time zone and enter it, example: Asia/Krasnoyarsk " _ZONEINFO
+read -p "Enter timezone: " _ZONEINFO
 export ZONEINFO=${_ZONEINFO:-"Asia/Krasnoyarsk"}
+
+read -p "Enter bootloader ID. Use only English letters, not spaces or other special symbols! " _BOOTLOADER_ID
+export BOOTLOADER_ID=${_BOOTLOADER_ID:-"ArchLinux"}
+
+read -p "Do you want to disable mitigations? [y/N] " _MITIGATIONS_OFF
+if [[ "${_MITIGATIONS_OFF,,}" == "y" ]]; then
+  export MITIGATIONS_OFF="y"
+else
+  export MITIGATIONS_OFF="n"
+fi
+
+read -p "Do you want to disable selinux? [y/N] " _SELINUX_OFF
+if [[ "${_SELINUX_OFF,,}" == "y" ]]; then
+  export SELINUX_OFF="y"
+else
+  export SELINUX_OFF="n"
+fi
 
 read -p "Choose main language of the system: Russian or English? [ru/EN] " _LANGUAGE
 if [[ "${_LANGUAGE,,}" == "ru" ]]; then

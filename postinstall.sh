@@ -25,9 +25,9 @@ cd ..
 rm -rf paru
 
 BROWSER="io.github.ungoogled_software.ungoogled_chromium io.gitlab.librewolf-community"
-OFFICE="org.onlyoffice.desktopeditors org.libreoffice.LibreOffice"
+OFFICE="org.onlyoffice.desktopeditors"
 CODE_EDITOR="com.vscodium.codium"
-MESSENGER="org.telegram.desktop dev.vencord.Vesktop"
+MESSENGER="org.telegram.desktop"
 TORRENT="org.qbittorrent.qBittorrent"
 FILE_SHARER="org.localsend.localsend_app"
 YOUTUBE="io.freetubeapp.FreeTube com.github.unrud.VideoDownloader"

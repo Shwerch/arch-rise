@@ -61,20 +61,14 @@ mkinitcpio -P
 
 GRUB_CMDLINE_LINUX="GRUB_CMDLINE_LINUX=\"loglevel=3 quiet"
 
-read -p "Do you want to disable mitigations? [y/N] " MITIGATIONS_OFF
-if [[ "${MITIGATIONS_OFF,,}" != "n" ]]; then
+if [[ $MITIGATIONS_OFF == "y" ]]; then
   GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX mitigations=off"
 fi
-
-read -p "Do you want to disable selinux? [y/N] " SELINUX_OFF
-if [[ "${SELINUX_OFF,,}" != "n" ]]; then
+if [[ $SELINUX_OFF == "y" ]]; then
   GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX selinux=0"
 fi
 
 GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX cryptdevice=UUID=$DEV2_UUID:$CRYPTROOT cryptkey=rootfs:$KEY root=UUID=$ROOT_UUID\""
-
-read -p "Enter bootloader ID. Use only english letters, not spaces or other special symbols! " _BOOTLOADER_ID
-BOOTLOADER_ID=${_BOOTLOADER_ID:-ARCHLINUX}
 
 sed -i 's/GRUB_TIMEOUT/#GRUB_TIMEOUT/g' /etc/default/grub
 sed -i 's/GRUB_CMDLINE_LINUX/#GRUB_CMDLINE_LINUX/g' /etc/default/grub
@@ -85,8 +79,8 @@ echo $GRUB_CMDLINE_LINUX >> /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=$BOOTLOADER_ID --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 
-echo "Enter root password. If failed, enter \"passwd\" command again after the end of script execution"
+echo "Enter root password. If failed, enter passwd command again after the end of script execution"
 passwd
-echo "Enter $USERNAME password. If failed, enter \"passwd $USERNAME\" command again after the end of script execution"
+echo "Enter $USERNAME password. If failed, enter passwd $USERNAME command again after the end of script execution"
 passwd $USERNAME
 exit
