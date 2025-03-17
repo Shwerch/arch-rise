@@ -2,6 +2,7 @@ EFI_SIZE="128M"
 export ZRAM_SIZE="8G"
 BACKUP_NAME="luks-header-backup"
 export GRUB_GFXMODE="1920x1080"
+export GRUB_TIMEOUT="1"
 
 SCRIPT_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 export SCRIPT_DIR=$(basename $SCRIPT_PATH)
@@ -77,12 +78,20 @@ mount $ROOT /mnt
 mount --mkdir $DEV1 /mnt/efi
 
 read -p "Enter hostname: " _HOSTNAME
-export HOSTNAME=${_HOSTNAME:-archlinux}
-echo "Hostname is $HOSTNAME"
+export HOSTNAME=${_HOSTNAME:-"archlinux"}
 
 read -p "Enter username: " _USERNAME
-export USERNAME=${_USERNAME:-ultra}
-echo "Username is $USERNAME"
+export USERNAME=${_USERNAME:-"ultra"}
+
+read -p "Choose time zone and enter it, example: Asia/Krasnoyarsk " _ZONEINFO
+export ZONEINFO=${_ZONEINFO:-"Asia/Krasnoyarsk"}
+
+read -p "Choose main language of system: Russian or English? [ru/EN] " _LANGUAGE
+if [[ "${_LANGUAGE,,}" == "ru" ]]; then
+  export LANGUAGE="ru_RU.UTF-8"
+else
+  export LANGUAGE="en_US.UTF-8"
+fi
 
 echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
 echo "Connect to Wi-Fi if needed"
