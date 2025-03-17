@@ -29,6 +29,22 @@ if [[ "${ACCEPT,,}" != "y" ]]; then
   exit 1
 fi
 
+read -p "Enter hostname: " _HOSTNAME
+export HOSTNAME=${_HOSTNAME:-"archlinux"}
+
+read -p "Enter username: " _USERNAME
+export USERNAME=${_USERNAME:-"ultra"}
+
+read -p "Choose time zone and enter it, example: Asia/Krasnoyarsk " _ZONEINFO
+export ZONEINFO=${_ZONEINFO:-"Asia/Krasnoyarsk"}
+
+read -p "Choose main language of the system: Russian or English? [ru/EN] " _LANGUAGE
+if [[ "${_LANGUAGE,,}" == "ru" ]]; then
+  export LANGUAGE="ru_RU.UTF-8"
+else
+  export LANGUAGE="en_US.UTF-8"
+fi
+
 echo "Enter patrition password. Password will be hidden"
 _PASSWORD1="1"
 _PASSWORD2="2"
@@ -77,22 +93,6 @@ export ROOT_UUID=$(blkid $ROOT -o value -s UUID)
 mount $ROOT /mnt
 mount --mkdir $DEV1 /mnt/efi
 
-read -p "Enter hostname: " _HOSTNAME
-export HOSTNAME=${_HOSTNAME:-"archlinux"}
-
-read -p "Enter username: " _USERNAME
-export USERNAME=${_USERNAME:-"ultra"}
-
-read -p "Choose time zone and enter it, example: Asia/Krasnoyarsk " _ZONEINFO
-export ZONEINFO=${_ZONEINFO:-"Asia/Krasnoyarsk"}
-
-read -p "Choose main language of system: Russian or English? [ru/EN] " _LANGUAGE
-if [[ "${_LANGUAGE,,}" == "ru" ]]; then
-  export LANGUAGE="ru_RU.UTF-8"
-else
-  export LANGUAGE="en_US.UTF-8"
-fi
-
 echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
 echo "Connect to Wi-Fi if needed"
 iwctl station list
@@ -120,7 +120,6 @@ FONTS="noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
 ttf-liberation ttf-dejavu ttf-roboto \
 ttf-jetbrains-mono ttf-fira-code ttf-hack adobe-source-code-pro-fonts \
 ttf-caladea ttf-carlito ttf-opensans otf-overpass tex-gyre-fonts ttf-ubuntu-font-family"
-
 
 pacstrap -K /mnt $BASE $BOOTLOADER $NETWORK $PIPEWIRE $VIDEODRIVER $KDE_PLASMA $SHELL $UTILS $ARCHIVES $PERFORMANCE $FONTS
 
