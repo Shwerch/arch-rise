@@ -72,6 +72,7 @@ GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX cryptdevice=UUID=$DEV2_UUID:$CRYPTROOT c
 
 sed -i 's/GRUB_TIMEOUT/#GRUB_TIMEOUT/g' /etc/default/grub
 sed -i 's/GRUB_CMDLINE_LINUX/#GRUB_CMDLINE_LINUX/g' /etc/default/grub
+sed -i 's/GRUB_GFXMODE/#GRUB_GFXMODE/g' /etc/default/grub
 echo "GRUB_ENABLE_CRYPTODISK=y" >> /etc/default/grub
 echo "GRUB_GFXMODE=$GRUB_GFXMODE" >> /etc/default/grub
 echo "GRUB_TIMEOUT=$GRUB_TIMEOUT" >> /etc/default/grub
