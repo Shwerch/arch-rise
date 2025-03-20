@@ -23,13 +23,11 @@ useradd -m $USERNAME
 usermod -aG wheel,audio,video,storage,lp,realtime $USERNAME
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
 
-systemctl enable NetworkManager bluetooth ufw
-systemctl enable sddm
-systemctl enable systemd-oomd ananicy-cpp irqbalance fstrim.timer
+systemctl enable NetworkManager bluetooth ufw sddm systemd-oomd ananicy-cpp irqbalance fstrim.timer
 systemctl --user enable pipewire pipewire.socket pipewire-pulse wireplumber
 systemctl mask NetworkManager-wait-online.service
-systemctl --user mask kde-baloo.service
-systemctl --user mask plasma-baloorunner.service
+systemctl --user mask kde-baloo.service plasma-baloorunner.service
+
 
 echo "vm.swappiness = 100" > /etc/sysctl.d/90-sysctl.conf
 echo "vm.dirty_background_bytes=67108864" > /etc/sysctl.d/30-dirty-pages.conf

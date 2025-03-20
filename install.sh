@@ -10,15 +10,12 @@ export SCRIPT_DIR=$(basename $SCRIPT_PATH)
 lsblk -p
 read -p "Enter the disk on which the system will be installed. Data on the disk will be wiped! (examples: /dev/sda /dev/nvme0n1 and etc) " DEV
 if [[ $DEV == "/dev/nvme"* ]]; then
-  _D1="p1"
-  _D2="p2"
+  export DEV1="${DEV}p1"
+  export DEV2="${DEV}p2"
 else
-  _D1="1"
-  _D2="2"
+  export DEV1="${DEV}1"
+  export DEV2="${DEV}2"
 fi
-
-export DEV1="$DEV$_D1"
-export DEV2="$DEV$_D2"
 
 export CRYPTROOT="cryptroot"
 export ROOT="/dev/mapper/$CRYPTROOT"
@@ -129,7 +126,7 @@ NETWORK="networkmanager ufw bluez bluez-utils bluez-obex"
 PIPEWIRE="pipewire lib32-pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack wireplumber realtime-privileges rtkit"
 VIDEODRIVER="mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-mesa-layers opencl-rusticl-mesa lib32-opencl-rusticl-mesa"
 KDE_PLASMA="sddm plasma konsole dolphin kio-admin spectacle ark"
-SHELL="fish fastfetch"
+SHELL="fish wl-clipboard fastfetch"
 UTILS="git less clang android-tools exfatprogs reflector xdg-desktop-portal-gtk"
 ARCHIVES="lrzip unrar unzip unace 7zip squashfs-tools"
 PERFORMANCE="ananicy-cpp irqbalance"
@@ -149,5 +146,5 @@ cp -r $SCRIPT_PATH /mnt/home/$USERNAME
 rm -rf /mnt/$SCRIPT_DIR
 
 echo "The installation is complete. You are on an installed system as root using arch-chroot. \
-Enter additional commands to configure the system, if necessary, and reboot by entering the \"exit\" and \"reboot\" commands."
+Enter additional commands to configure the system, if necessary, and reboot by entering the exit and reboot commands."
 arch-chroot /mnt
